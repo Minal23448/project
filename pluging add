@@ -1,0 +1,59 @@
+pluging add  
+ tar file need
+
+Windows 👍:
+nagios
+Install  nagios plugin application
+Firewall off
+
+Debian 
+ Cd /usr/local/nagios/libexec/
+Check ncpa.py
+Sudo nano ncpa.py
+ In bar write python3 {#!/usr/bin/env python3}
+Sudo ./check_ncpa.py -V
+Sudo ./check_ncpa.py -t password123 -H 192.168.80.132 -M memory/virtual
+
+
+ Cd /usr/local/nagios/etc/object
+Sudo nano commands.cfg
+Define command { 
+Command_name   check_ncpa
+Command_line        $user1$/check_nacp.py -H $HOSTADDRESS$ $ARG1$
+}
+
+sudo nano  /usr/local/nagios/etc/naigos.conf 
+#51 line uncomment cfg_dir=/usr/local/nagios/etc/servers
+sudo mkdir -p /usr/local/nagios/etc/servers
+
+sudo nano  /usr/local/nagios/etc/object/templates.conf 
+#Comment line # hosts windows  [103line no ]
+
+sudo nano /usr/local/nagios/etc/servers/win10-1.cfg
+
+
+define host	{
+        use				          windows-server
+        host_name			      win10-1
+        alias			         	Windows 10 Sys 1
+        address				      <Windows ip>
+        max_check_attempts		5
+}
+
+define service	{
+        use			                         generic-service
+        host_name		                     win10-1
+        service_description	             NCPA version check
+        check_command		                 check_ncpa!-t 'token' -p -P 5693 -M system/agent_version
+}
+
+define service	{
+        use			                               generic-service
+        host_name	                            	win10-1
+        service_description	                    CPU average
+        check_command		                        check_ncpa!-t 'token' -p -P 5693 -M cpu/percent -w 20 -c 40 -q 'aggregate=avg'
+}
+```
+
+sudo systemctl restart nagios
+sudo systemctl restart apache2
