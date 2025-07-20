@@ -14,5 +14,4 @@ sudo ./configure
 sudo make
 sudo make install
   
-
 check green tick  in service 
