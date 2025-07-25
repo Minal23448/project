@@ -1,0 +1,23 @@
+# Install Dependencies
+
+- sudo apt-get install -y python3-systemd fail2ban
+- sudo nano /etc/fail2ban/jail.local
+
+[sshd]
+
+backend = systemd
+enabled = true
+port = 22
+filter = sshd
+maxretry = 3
+bantime = 3600
+findtime = 600
+
+## findtime = duration in seconds over which the failures are counted 
+
+- sudo systemctl restart fail2ban
+- sudo systemctl status fail2ban
+- sudo fail2ban-client status
+- sudo fail2ban-client status sshd
+- sudo apt install iptables
+- sudo iptables -L
